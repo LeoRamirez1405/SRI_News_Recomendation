@@ -4,7 +4,7 @@ from class_News import News
 from sklearn.metrics.pairwise import cosine_similarity
 
 
-def query_result(query,loaded_matrix,csvpath,vectorizador,cantDocs_to_return= 0):
+def query_result(query,loaded_matrix,csvpath,vectorizador,cantDocs_to_return= 0,presition = 0.05):
 
     df = pandas.read_csv(csvpath)
     # Tokenización y preprocesamiento de la consulta
@@ -16,7 +16,7 @@ def query_result(query,loaded_matrix,csvpath,vectorizador,cantDocs_to_return= 0)
 
     similarity_scores = {i: score for i, score in enumerate(similarity_scores)}
     diccionario_ordenado = dict(sorted(similarity_scores.items(), key=lambda item: item[1],reverse = True))
-    diccionario_ordenado = {k: v for k, v in diccionario_ordenado.items() if v >  0.0}
+    diccionario_ordenado = {k: v for k, v in diccionario_ordenado.items() if v >  presition}
     
     if cantDocs_to_return > 0:
         # Convertir el diccionario ordenado en una lista de tuplas para poder indexarlo
@@ -41,6 +41,5 @@ def query_result(query,loaded_matrix,csvpath,vectorizador,cantDocs_to_return= 0)
 
         news_item = News(title, author, date, summary, url)
         documents.append(news_item)
-    documents[0].print()
     return documents
 

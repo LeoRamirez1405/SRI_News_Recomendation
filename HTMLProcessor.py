@@ -3,25 +3,7 @@ import requests
 from bs4 import BeautifulSoup
 import re
 from datetime import datetime
-
-class StructuredNew:
-    def __init__(self, title = "Unidentified", author = "Unidentified", date = "Unidentified", main_text = "Unidentified"):
-        self.Title : str = title
-        self.Author : str = author
-        self.Date : str = date
-        self.MainText : str = main_text
-
-    def get_title(self):
-        return self.Title
-
-    def get_author(self):
-        return self.Author
-
-    def get_date(self):
-        return self.Date
-
-    def get_main_text(self):
-        return self.MainText
+from class_News import News
     
 
 class HTMLProcessor:
@@ -59,7 +41,7 @@ class HTMLProcessor:
             title = article.title
             text = article.text
         
-            return StructuredNew(title, author, date, text)
+            return News(title, author, date, text,url)
 
 
     
@@ -128,8 +110,13 @@ class HTMLProcessor:
                 formatted_dates.append(formatted_date)
 
         # Devolver la primera
-        return formatted_dates[0]
-        
+        try:
+            result = formatted_dates[0]
+        except:
+            result = "Not Found"
+
+        return result
+
 def query_html_processor(url):
     # URL de ejemplo
 
@@ -138,30 +125,7 @@ def query_html_processor(url):
 
     # Procesar la URL y obtener una estructura de noticias
     structured_new = html_processor.Process(url)
-
+    structured_new.print_new()
+    print("--------------")
     # Imprimir los atributos de la estructura de noticias
-    try:
-        title = structured_new.get_title()
-    except:
-        title = ""
-
-    try:
-        author = structured_new.get_author()
-    except:
-        author = ""
-    
-    try:
-        date = structured_new.get_date()
-    except:
-        date = ""
-    try:
-        desc = structured_new.get_main_text()
-    except:
-        desc = ""
-        
-    print("Título:", title)
-    print("Autor:", author)
-    print("Fecha:", date)
-    print("Texto Principal:",desc )
-
-    return f"{title} {desc}"
+    return [structured_new,f"{structured_new.get_title()} {structured_new.get_summary()}"]

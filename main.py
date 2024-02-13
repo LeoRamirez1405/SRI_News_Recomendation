@@ -1,6 +1,6 @@
 from querys_work import query_result
 from tfxidf_load import load_mat,load_vec,save_info_to_Joblib
-from HTMLProcessor import StructuredNew, HTMLProcessor,query_html_processor
+from HTMLProcessor import HTMLProcessor,query_html_processor
 import time
 import os
 
@@ -18,7 +18,7 @@ for i, file in enumerate(csv_files):
 
 # Ask the user to select a file
 save_name = input("Seleccione el csv a cargar: ")
-print("\n\n\n")
+print("\n")
 # Assuming save_name is an index, convert it to an integer
 try:
     selected_file = csv_files[int(save_name)]
@@ -30,13 +30,12 @@ except IndexError:
 mat_url = f'./files_charged/matrix/{selected_file[:-4]}_matrix.joblib'
 vec_url = f'./files_charged/vect/{selected_file[:-4]}_vect.joblib'
 
-url = input("\n\nIntroduzca la noticia (link): ")
-query = query_html_processor(url)
-    
-while query != '':
-    url = input("\n\nIntroduzca la noticia (link): ")
-    query = query_html_processor(url)
-    print("\n\n")
+url = input("\nIntroduzca la noticia (link): ")
+process = query_html_processor(url)
+struc_new = process[0]
+query = process[1]
+
+while url != '':
     if first:
         matrix = load_mat(mat_url)
         vectorizer = load_vec(vec_url)        
@@ -44,7 +43,15 @@ while query != '':
 
     scores = query_result(query,matrix,f'{url_csv}.csv',vectorizer,10)
     
+    print(f"\n{struc_new.print_new()}\n")
+    
     for score in scores:
-        score.print()
+        print(f"\n{score.print_new()}\n")
+    
+    url = input("\nIntroduzca la noticia (link): ")
+    process = query_html_processor(url)
+    struc_new = process[0]
+    query = process[1]
 
+    #return [struc_new,scores]
     
