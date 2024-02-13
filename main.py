@@ -1,8 +1,4 @@
 from querys_work import query_result,sri,csv_files
-from tfxidf_load import load_mat,load_vec,save_info_to_Joblib
-from HTMLProcessor import HTMLProcessor,query_html_processor
-
-
 
 for i, file in enumerate(csv_files):
     print(f"{i}. {file[:-4]}")  # Remove '.csv' from the printed name
