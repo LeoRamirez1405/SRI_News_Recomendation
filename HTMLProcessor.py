@@ -125,7 +125,5 @@ def query_html_processor(url):
 
     # Procesar la URL y obtener una estructura de noticias
     structured_new = html_processor.Process(url)
-    structured_new.print_new()
-    print("--------------")
     # Imprimir los atributos de la estructura de noticias
     return [structured_new,f"{structured_new.get_title()} {structured_new.get_summary()}"]

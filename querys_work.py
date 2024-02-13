@@ -2,7 +2,13 @@ import pandas
 import prepro
 from class_News import News
 from sklearn.metrics.pairwise import cosine_similarity
+from tfxidf_load import load_mat,load_vec,save_info_to_Joblib
+from HTMLProcessor import HTMLProcessor,query_html_processor
+import os
 
+first = True
+file_url='./files_charged/csv/'
+csv_files = [f for f in os.listdir(file_url) if f.endswith('.csv')]
 
 def query_result(query,loaded_matrix,csvpath,vectorizador,cantDocs_to_return= 0,presition = 0.05):
 
@@ -43,3 +49,29 @@ def query_result(query,loaded_matrix,csvpath,vectorizador,cantDocs_to_return= 0,
         documents.append(news_item)
     return documents
 
+
+def sri(save_name,url,cant_docs_return = 10):
+    global first
+    global file_url
+    global csv_files
+    try:
+        selected_file = csv_files[int(save_name)]
+        url_csv = f"./files_charged/csv/{selected_file[:-4]}"
+    except IndexError:
+        url_csv = f"./files_charged/{csv_files[int(0)][:-4]}"
+
+
+    mat_url = f'./files_charged/matrix/{selected_file[:-4]}_matrix.joblib'
+    vec_url = f'./files_charged/vect/{selected_file[:-4]}_vect.joblib'
+    process = query_html_processor(url)
+    struc_new = process[0]
+    query = process[1]
+
+    if first:
+        matrix = load_mat(mat_url)
+        vectorizer = load_vec(vec_url)        
+        first = False
+
+    scores = query_result(query,matrix,f'{url_csv}.csv',vectorizer,cant_docs_return)
+
+    return [struc_new,scores]
