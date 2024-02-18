@@ -30,11 +30,11 @@ CORS(app)
 def get_news():
     url = request.args.get('url')
     source = request.args.get('source')
-    print(f'url: {url}, source: {source}')
+    # print(f'url: {url}, source: {source}')
     [struc_new,scores] = sri(source,url)
-    print(f'base: {struc_new.title}, associated_news: {len(scores)}')
-    print('new: ', struc_new.serialize())
-    print('associated_news: ', [score.serialize() for score in scores])
+    # print(f'base: {struc_new.title}, associated_news: {len(scores)}')
+    # print('new: ', struc_new.serialize())
+    # print('associated_news: ', [score.serialize() for score in scores])
     if url:
         return jsonify({'base': struc_new.serialize(),
                         'associated_news': [score.serialize() for score in scores]})
