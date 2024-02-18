@@ -66,7 +66,7 @@ def sri(save_name,url,cant_docs_return = 10):
         selected_file = save_name
         url_csv = f"./files_charged/csv/{selected_file[:-4]}"
     except IndexError:
-        url_csv = f"./files_charged/{csv_files[int(0)][:-4]}"
+        url_csv = f"./files_charged/all_news"
 
 
     mat_url = f'./files_charged/matrix/{selected_file[:-4]}_matrix.joblib'
