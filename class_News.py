@@ -44,3 +44,12 @@ class News:
 
         result = "Título: {} \nAutor: {} \nFecha: {} \nTexto Principal: {}\nURL: {}".format(title, author, date, desc,self.url)
         return result
+    
+    def serialize(self):
+        return {
+            'title': self.title,
+            'author': self.author,
+            'date': self.date,
+            'summary': self.summary, 
+            'url': self.url
+        }
