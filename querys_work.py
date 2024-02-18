@@ -11,6 +11,8 @@ first = True
 directorio_actual = os.path.dirname(os.path.abspath(__file__))
 file_url= directorio_actual+'/files_charged/csv/'
 csv_files = [f for f in os.listdir(file_url) if f.endswith('.csv')]
+matrix = ""
+vectorizer = ""
 
 def query_result(query,loaded_matrix,csvpath,vectorizador,cantDocs_to_return= 0,presition = 0.05):
 
@@ -57,6 +59,8 @@ def sri(save_name,url,cant_docs_return = 10):
     global first
     global file_url
     global csv_files
+    global matrix
+    global vectorizer
     try:
         # selected_file = csv_files[int(save_name)]
         selected_file = save_name
@@ -74,10 +78,10 @@ def sri(save_name,url,cant_docs_return = 10):
     struc_new = process[0]
     query = process[1]
 
-    # if first:
-    matrix = load_mat(mat_url)
-    vectorizer = load_vec(vec_url)        
-    first = False
+    if first:
+        matrix = load_mat(mat_url)
+        vectorizer = load_vec(vec_url)        
+        first = False
 
     scores = query_result(query, matrix, f'{url_csv}.csv', vectorizer, cant_docs_return)
 

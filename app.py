@@ -18,7 +18,7 @@ from querys_work import sri,csv_files
 
 
 from flask import Flask, jsonify, request
-from news import New
+from class_News import News
 from datetime import date
 from flask_cors import CORS
 

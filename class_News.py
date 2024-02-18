@@ -1,10 +1,29 @@
 class News:
     def __init__(self, title, author, date, summary, url):
-        self.title = title
-        self.author = author
-        self.date = date
-        self.summary = summary
-        self.url = url
+        if not isinstance(title, str):
+            self.title = ""
+        else:
+            self.title = str(title)
+        
+        if not isinstance(author, str):
+            self.author = ""
+        else:
+            self.author = str(author)
+        
+        if not isinstance(date, str):
+            self.date = ""
+        else:
+            self.date = str(date)
+        
+        if not isinstance(summary, str):
+            self.summary = ""
+        else:
+            self.summary = str(summary)
+            
+        if not isinstance(url, str):
+            self.url = ""
+        else:
+            self.url = str(url)
 
     def get_title(self):
         return self.title
