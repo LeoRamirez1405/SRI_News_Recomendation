@@ -12,6 +12,7 @@ directorio_actual = os.path.dirname(os.path.abspath(__file__))
 file_url= directorio_actual+'/files_charged/csv/'
 csv_files = [f for f in os.listdir(file_url) if f.endswith('.csv')]
 matrix = ""
+matrix_url = ""
 vectorizer = ""
 
 def query_result(query,loaded_matrix,csvpath,vectorizador,cantDocs_to_return= 0,presition = 0.05):
@@ -37,6 +38,7 @@ def query_result(query,loaded_matrix,csvpath,vectorizador,cantDocs_to_return= 0,
     documents = []
     for score in diccionario_ordenado:
         index = score
+        print(f"indice: {index}")
         title = df.loc[index, 'title']
         try:
             author = df.loc[index, 'author']
@@ -45,8 +47,7 @@ def query_result(query,loaded_matrix,csvpath,vectorizador,cantDocs_to_return= 0,
         try:
             date = df.loc[index, 'date']
         except:
-            date = date()
-            # date = 'Unknown'
+            date = 'Unknown'
         summary = df.loc[index, 'description']
         url = df.loc[index, 'link']
 
@@ -60,13 +61,14 @@ def sri(save_name,url,cant_docs_return = 10):
     global file_url
     global csv_files
     global matrix
+    global matrix_url
     global vectorizer
     try:
         # selected_file = csv_files[int(save_name)]
         selected_file = save_name
         url_csv = f"./files_charged/csv/{selected_file[:-4]}"
-    except IndexError:
-        url_csv = f"./files_charged/all_news"
+    except:
+        url_csv = f"./files_charged/csv/all_news"
 
 
     mat_url = f'./files_charged/matrix/{selected_file[:-4]}_matrix.joblib'
@@ -78,8 +80,9 @@ def sri(save_name,url,cant_docs_return = 10):
     struc_new = process[0]
     query = process[1]
 
-    if first:
+    if first or matrix_url != mat_url:
         matrix = load_mat(mat_url)
+        matrix_url = mat_url
         vectorizer = load_vec(vec_url)        
         first = False
 
