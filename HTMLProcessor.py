@@ -66,7 +66,7 @@ class HTMLProcessor:
         else:
             # Imprimir un mensaje de error si la solicitud no fue exitosa
             print(f"Error al obtener la página. Código de estado: {response.status_code}")
-            return None
+            return "Not Found"
         
     def Extract_author_from_raw(self, html):
         
