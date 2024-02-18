@@ -1,0 +1,63 @@
+<div *ngIf="isLoading">
+    <i class="pi pi-spin pi-spinner" align="center"></i>
+</div>
+
+<div>
+    <div class="body" [class.disabled]="isLoading">
+        <div class="grid-container">
+            <div class="left-item fixed-content" align="left">
+                <div class="card flex justify-content-center" style="margin-bottom: 0px;">
+                    <p-inputGroup [style]="{'margin-bottom':'5px'}">
+                        <input [required]="true" type="text" pInputText placeholder="Url" [(ngModel)]="query"/>
+                        <button [disabled]="!query || !selectedSource" type="button" pButton icon="pi pi-search" (click)="search()"></button>
+                    </p-inputGroup>
+                 
+                    <div class='card'>
+                        <h3 [style]="{'margin-bottom': '5px', 'margin-top':'0px'}">Select a Source</h3>
+                        <div class="sources">
+                            <div class="flex flex-wrap gap-3" [style]="{'margin-left':'5px'}">
+                                <div *ngFor="let source of sources" class="field-checkbox">
+                                    <p-radioButton [required]="true" [inputId]="source" name="category" [value]="source" [(ngModel)]="selectedSource"></p-radioButton>
+                                    <label [for]="source" class="ml-2" [style]="{'margin-left':'5px'}">{{ sourceName(source) }}</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div *ngIf="searchResult">
+                    <div class="card" align="center">
+                        <h3 [style]="{'margin-bottom': '5px', 'margin-top':'0px'}" *ngIf="searchResult.base.title.length > 0">{{searchResult.base.title}}</h3>
+                        <p *ngIf="searchResult.base.author.length > 0">Author: {{searchResult.base.author}}</p>
+                        <p *ngIf="searchResult.base.summary.length > 0">{{searchResult.base.summary}}</p>
+                        <p *ngIf="searchResult.base.date.length > 0">date: {{searchResult.base.date}}</p>
+                        <a href={{searchResult.base.url}} target="_blank">Visit the website</a>
+                    </div>
+                </div>
+            </div>
+        
+            <div class="right-item scrollable-content" align="center">
+                <div *ngIf="!searchResult || searchResult.associated_news.length == 0">
+                    <h1 class="associated-news-header">We have no news about this topic</h1>
+                </div>
+                <div *ngIf="searchResult && searchResult.associated_news.length != 0">
+                    <h1 class="associated-news-header">Associated News</h1>
+                    <div class="card">
+                        <p-timeline [value]="searchResult.associated_news" align="alternate" styleClass="customized-timeline">
+                            <ng-template pTemplate="marker" let-event>
+                                <span class="custom-marker shadow-2"></span>
+                            </ng-template>
+                            <ng-template pTemplate="content" let-event>
+                                <p-card *ngIf="event.title.length > 0" [header]="event.title" [subheader]=" event.date.length > 0 ? event.date : '' ">
+                                    <p *ngIf="event.author.length > 0">Author: {{event.author}}</p>
+                                    <p>{{event.summary}}</p>
+                                    <a href={{event.url}} target="_blank">Visita el sitio web</a>
+                                </p-card>
+                            </ng-template>
+                        </p-timeline>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
