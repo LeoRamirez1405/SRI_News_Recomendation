@@ -77,7 +77,7 @@ def sri(save_name,url,cant_docs_return = 10):
     # if first:
     matrix = load_mat(mat_url)
     vectorizer = load_vec(vec_url)        
-    first = False
+    # first = False
 
     scores = query_result(query, matrix, f'{url_csv}.csv', vectorizer, cant_docs_return)
 
