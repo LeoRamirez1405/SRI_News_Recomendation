@@ -51,7 +51,7 @@
                                 <p-card *ngIf="event.title.length > 0" [header]="event.title" [subheader]=" event.date.length > 0 ? event.date : '' ">
                                     <p *ngIf="event.author.length > 0">Author: {{event.author}}</p>
                                     <p>{{event.summary}}</p>
-                                    <a href={{event.url}} target="_blank">Visita el sitio web</a>
+                                    <a href={{event.url}} target="_blank">Visit the website</a>
                                 </p-card>
                             </ng-template>
                         </p-timeline>
