@@ -4,10 +4,17 @@ from bs4 import BeautifulSoup
 import re
 from datetime import datetime
 from class_News import News
-    
 
 class HTMLProcessor:
+    """
+    Clase HTMLProcessor procesa URLs de noticias y extrae información relevante como título, autor, fecha y texto.
     
+    Esta clase utiliza la biblioteca Newspaper3k para descargar y analizar el contenido de las noticias, y BeautifulSoup para procesar el HTML.
+    
+    Atributos:
+    - _instance (HTMLProcessor): Instancia única de la clase (singleton).
+    """
+
     _instance = None
 
     def __new__(cls, *args, **kwargs):
@@ -16,7 +23,15 @@ class HTMLProcessor:
         return cls._instance
 
     def Process(self, url):
-
+        """
+        Procesa una URL de noticia, descarga y analiza el contenido, y extrae información relevante.
+        
+        Parámetros:
+        - url (str): La URL de la noticia a procesar.
+        
+        Retorna:
+        - News: Un objeto News con la información extraída de la noticia.
+        """
         # Crear un objeto Article con la URL
         article = Article(url)
         
@@ -26,7 +41,6 @@ class HTMLProcessor:
 
         #Extraer el texto en crudo del HTML
         rawHTML : str = self.ExtractRawText(url)
-
         
         if rawHTML:
         
@@ -43,9 +57,16 @@ class HTMLProcessor:
         
             return News(title, author, date, text,url)
 
-
-    
     def ExtractRawText(self, url):
+        """
+        Extrae el texto en crudo del HTML de una URL.
+        
+        Parámetros:
+        - url (str): La URL del artículo a procesar.
+        
+        Retorna:
+        - str: El texto en crudo del HTML.
+        """
         # Realizar la solicitud GET a la URL
         response = requests.get(url)
 
@@ -69,7 +90,15 @@ class HTMLProcessor:
             return "Not Found"
         
     def Extract_author_from_raw(self, html):
+        """
+        Extrae el nombre del autor del HTML en crudo.
         
+        Parámetros:
+        - html (str): El HTML en crudo del artículo.
+        
+        Retorna:
+        - str: El nombre del autor, si se encuentra.
+        """
         # Expresion regular para encontrar el autor
         author_pattern = r'"author"\s*:.*?"name"\s*:\s*"(.*?)"'
 
@@ -82,6 +111,15 @@ class HTMLProcessor:
             return None
 
     def Extract_dates_from_raw(self, html):
+        """
+        Extrae la fecha de publicación del HTML en crudo.
+        
+        Parámetros:
+        - html (str): El HTML en crudo del artículo.
+        
+        Retorna:
+        - str: La fecha de publicación, si se encuentra.
+        """
         # Expresiones regulares para identificar la fecha, se asume que la primera fecha en aparecer es la correcta
         date_pattern_1 = r'\b\d{1,2}(?:st|nd|rd|th)? (?:January|February|March|April|May|June|July|August|September|October|November|December) \d{4}\b'
         date_pattern_2 = r'\b(?:Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)\. \d{1,2}, \d{4}\b'
@@ -118,8 +156,15 @@ class HTMLProcessor:
         return result
 
 def query_html_processor(url):
-    # URL de ejemplo
-
+    """
+    Procesa una URL de noticia y devuelve una estructura de noticias con la información extraída.
+    
+    Parámetros:
+    - url (str): La URL de la noticia a procesar.
+    
+    Retorna:
+    - list: Una lista que contiene un objeto News y una cadena con el título y el resumen de la noticia.
+    """
     # Crear un objeto HTMLProcessor
     html_processor = HTMLProcessor()
 

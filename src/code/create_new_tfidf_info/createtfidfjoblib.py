@@ -5,19 +5,25 @@ import prepro
 from sklearn.feature_extraction.text import TfidfVectorizer
 import joblib
 
-
 # Specify the path to the directory containing the CSV files
 csv_directory = './'
 
 # Use glob to find all CSV files in the specified directory
 csv_files = glob.glob(csv_directory + '*.csv')
 
-
-def save_info_to_Joblib(csvpath,cantDocs):
-
+def save_info_to_Joblib(csvpath, cantDocs):
+    """
+    Preprocesa los documentos de un archivo CSV, calcula la matriz TF-IDF y guarda tanto la matriz como el vectorizador en archivos .joblib.
+    
+    Parámetros:
+    - csvpath (str): Ruta al archivo CSV que contiene los documentos.
+    - cantDocs (int): Número de documentos a procesar desde el archivo CSV.
+    
+    Retorna:
+    - TfidfVectorizer: Vectorizador utilizado para calcular la matriz TF-IDF.
+    """
     # Leer el archivo CSV en un DataFrame de pandas
     df = pd.read_csv(csvpath, sep=',', engine='python')
-
 
     # Aquí cargamos los documentos
     documents = [str(doc['title']) + " " + str(doc['description']) for _, doc in df.iterrows()]
@@ -38,8 +44,6 @@ def save_info_to_Joblib(csvpath,cantDocs):
     joblib.dump(tfidf_matrix, f'{base_filename}_matrix.joblib')
     
     return tfidf_vectorizer
-
-
 
 for csv_file in csv_files:
     print(f'Processing {csv_file}...')

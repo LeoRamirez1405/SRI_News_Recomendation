@@ -16,7 +16,20 @@ matrix_url = ""
 vectorizer = ""
 
 def query_result(query,loaded_matrix,csvpath,vectorizador,cantDocs_to_return= 0,presition = 0.05):
-
+    """
+    Calcula y devuelve los documentos más similares a una consulta dada, utilizando la similitud del coseno.
+    
+    Parámetros:
+    - query (str): La consulta a buscar.
+    - loaded_matrix (np.array): Matriz de documentos preprocesados y vectorizados.
+    - csvpath (str): Ruta al archivo CSV que contiene los metadatos de los documentos.
+    - vectorizador: El vectorizador utilizado para transformar los documentos.
+    - cantDocs_to_return (int): El número de documentos a retornar. Por defecto es 0, lo que significa todos los documentos.
+    - presition (float): Umbral de similitud para considerar un documento como relevante. Por defecto es 0.05.
+    
+    Retorna:
+    - list: Lista de objetos News que representan los documentos más similares a la consulta.
+    """
     df = pandas.read_csv(csvpath)
     # Tokenización y preprocesamiento de la consulta
     query_tokens = prepro.preprocess_documents([query])[0]
@@ -57,6 +70,17 @@ def query_result(query,loaded_matrix,csvpath,vectorizador,cantDocs_to_return= 0,
 
 
 def sri(save_name,url,cant_docs_return = 10):
+    """
+    Procesa una URL de noticia, realiza una consulta y devuelve los documentos más relevantes según la similitud del coseno.
+    
+    Parámetros:
+    - save_name (str): Nombre del archivo CSV a utilizar para la consulta.
+    - url (str): URL de la noticia a procesar.
+    - cant_docs_return (int): Número de documentos a retornar. Por defecto es 10.
+    
+    Retorna:
+    - list: Una lista que contiene un objeto News con la información de la noticia procesada y una lista de objetos News con los documentos más relevantes según la consulta.
+    """
     global first
     global file_url
     global csv_files
